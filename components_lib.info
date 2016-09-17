@@ -1,0 +1,5 @@
+name = Components Library
+description = Allows declaring Drupal templates anywhere. For each template, its (default) corresponding hook and theme_hook_suggestions priority must be specified in one of the following formats : .info file (7.x only), [planned] .yml (7.x: with 'parse_yaml' contrib module), or [discuss] .json.
+core = 7.x
+
+dependencies[] = libraries

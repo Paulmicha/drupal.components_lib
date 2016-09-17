@@ -1,0 +1,57 @@
+<?php
+
+/**
+ * @file
+ * Components Library module.
+ *
+ * For each template, its (default) corresponding hook and
+ * theme_hook_suggestions priority must be specified in one of the following
+ * formats : .info file, [planned] .yml - with contrib: parse_yaml, or
+ * [planned] .json.
+ *
+ * Generic (reusable) components should reside in libraries, and specific ones
+ * will be scanned for in active theme(s) and/or modules implementing
+ * hook_components_lib_paths_alter().
+ */
+
+/**
+ * Folder name containing components.
+ *
+ * Will be looked for in inside libraries, active theme(s), and paths possibly
+ * added via hook_components_lib_paths_alter().
+ */
+define('COMPONENTS_LIB_FOLDER', 'components');
+
+/**
+ * Implements hook_theme_registry_alter().
+ *
+ * Templates discovery : register components in Drupal theming system.
+ */
+function components_lib_theme_registry_alter(&$theme_registry) {
+  $components_lib_paths = array();
+  $components_lib_paths['libraries'] = libraries_get_path(COMPONENTS_LIB_FOLDER);
+  $themes = list_themes();
+  foreach ($themes as $theme => $info) {
+    if ($info->status) {
+      $components_lib_paths[] = drupal_get_path('theme', $theme) . '/' . COMPONENTS_LIB_FOLDER;
+    }
+  }
+  drupal_alter('components_lib_paths', $components_lib_paths);
+
+  // @todo WIP
+  // $theme_registry_copy = $theme_registry;
+  // _theme_process_registry($theme_registry_copy, 'phptemplate', 'theme_engine', 'pow', $components_lib_path);
+  // $theme_registry += array_diff_key($theme_registry_copy, $theme_registry);
+  // foreach ($theme_registry as $hook) {
+  //   foreach ($components_lib_paths as $components_lib_path) {
+  //     $theme_registry[$h]['theme paths'][] = $components_lib_path;
+  //   }
+  // }
+}
+
+/**
+ * Fetches a single component "metadata" (default config, or settings).
+ */
+function components_lib_get_metadata($component_path) {
+  // @todo WIP
+}
